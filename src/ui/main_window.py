@@ -113,69 +113,152 @@ class MainWindow(QMainWindow):
             theme = self.settings.get('theme', '浅色')
             if theme == '浅色':
                 self.setStyleSheet(f"""
-                    QMainWindow {{
-                        background-color: #f0f0f0;
+                    QMainWindow, QDialog {{
+                        background-color: #f5f5f5;
                     }}
                     QWidget {{
-                        background-color: white;
-                        color: black;
+                        background-color: #ffffff;
+                        color: #2c3e50;
                         font-size: {self.settings.get('font_size', 12)}pt;
                     }}
-                    QPushButton {{
+                    QMenuBar {{
+                        background-color: #ffffff;
+                        border-bottom: 1px solid #e0e0e0;
+                    }}
+                    QMenuBar::item:selected {{
                         background-color: #e0e0e0;
-                        border: 1px solid #b0b0b0;
-                        padding: 5px 10px;
-                        border-radius: 3px;
+                        border-radius: 4px;
+                    }}
+                    QMenu {{
+                        background-color: #ffffff;
+                        border: 1px solid #e0e0e0;
+                        padding: 5px;
+                    }}
+                    QMenu::item:selected {{
+                        background-color: #e0e0e0;
+                        border-radius: 4px;
+                    }}
+                    QPushButton {{
+                        background-color: #3498db;
+                        color: white;
+                        border: none;
+                        padding: 8px 15px;
+                        border-radius: 4px;
                     }}
                     QPushButton:hover {{
-                        background-color: #d0d0d0;
+                        background-color: #2980b9;
+                    }}
+                    QPushButton:pressed {{
+                        background-color: #2472a4;
                     }}
                     QLineEdit {{
-                        padding: 5px;
-                        border: 1px solid #b0b0b0;
-                        border-radius: 3px;
+                        padding: 8px;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 4px;
+                        background-color: #ffffff;
+                    }}
+                    QLineEdit:focus {{
+                        border: 1px solid #3498db;
                     }}
                     QTreeWidget {{
-                        border: 1px solid #b0b0b0;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 4px;
                     }}
                     QTreeWidget::item {{
                         padding: 5px;
+                    }}
+                    QTreeWidget::item:selected {{
+                        background-color: #3498db;
+                        color: white;
+                    }}
+                    QScrollBar:vertical {{
+                        border: none;
+                        background: #f0f0f0;
+                        width: 10px;
+                        border-radius: 5px;
+                    }}
+                    QScrollBar::handle:vertical {{
+                        background: #c0c0c0;
+                        border-radius: 5px;
+                    }}
+                    QScrollBar::handle:vertical:hover {{
+                        background: #a0a0a0;
                     }}
                 """)
             else:
                 self.setStyleSheet(f"""
-                    QMainWindow {{
-                        background-color: #2e2e2e;
+                    QMainWindow, QDialog {{
+                        background-color: #1e1e1e;
                     }}
                     QWidget {{
-                        background-color: #2e2e2e;
-                        color: white;
+                        background-color: #2d2d2d;
+                        color: #ffffff;
                         font-size: {self.settings.get('font_size', 12)}pt;
                     }}
+                    QMenuBar {{
+                        background-color: #2d2d2d;
+                        border-bottom: 1px solid #3d3d3d;
+                    }}
+                    QMenuBar::item:selected {{
+                        background-color: #3d3d3d;
+                        border-radius: 4px;
+                    }}
+                    QMenu {{
+                        background-color: #2d2d2d;
+                        border: 1px solid #3d3d3d;
+                        padding: 5px;
+                    }}
+                    QMenu::item:selected {{
+                        background-color: #3d3d3d;
+                        border-radius: 4px;
+                    }}
                     QPushButton {{
-                        background-color: #3e3e3e;
-                        border: 1px solid #505050;
-                        padding: 5px 10px;
-                        border-radius: 3px;
+                        background-color: #0d47a1;
                         color: white;
+                        border: none;
+                        padding: 8px 15px;
+                        border-radius: 4px;
                     }}
                     QPushButton:hover {{
-                        background-color: #4e4e4e;
+                        background-color: #1565c0;
+                    }}
+                    QPushButton:pressed {{
+                        background-color: #0a3d87;
                     }}
                     QLineEdit {{
-                        padding: 5px;
-                        border: 1px solid #505050;
-                        border-radius: 3px;
-                        background-color: #3e3e3e;
+                        padding: 8px;
+                        border: 1px solid #3d3d3d;
+                        border-radius: 4px;
+                        background-color: #2d2d2d;
                         color: white;
                     }}
+                    QLineEdit:focus {{
+                        border: 1px solid #0d47a1;
+                    }}
                     QTreeWidget {{
-                        border: 1px solid #505050;
-                        background-color: #2e2e2e;
-                        color: white;
+                        border: 1px solid #3d3d3d;
+                        border-radius: 4px;
+                        background-color: #2d2d2d;
                     }}
                     QTreeWidget::item {{
                         padding: 5px;
+                    }}
+                    QTreeWidget::item:selected {{
+                        background-color: #0d47a1;
+                        color: white;
+                    }}
+                    QScrollBar:vertical {{
+                        border: none;
+                        background: #2d2d2d;
+                        width: 10px;
+                        border-radius: 5px;
+                    }}
+                    QScrollBar::handle:vertical {{
+                        background: #4d4d4d;
+                        border-radius: 5px;
+                    }}
+                    QScrollBar::handle:vertical:hover {{
+                        background: #5d5d5d;
                     }}
                 """)
             

@@ -70,13 +70,31 @@ class ParserWidget(QWidget):
 
     def init_ui(self):
         main_layout = QVBoxLayout(self)
+        main_layout.setSpacing(10)
+        main_layout.setContentsMargins(15, 15, 15, 15)
         
         # URL输入区域
-        url_layout = QHBoxLayout()
+        url_container = QWidget()
+        url_container.setObjectName("urlContainer")
+        url_container.setStyleSheet("""
+            QWidget#urlContainer {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+                padding: 5px;
+            }
+        """)
+        url_layout = QHBoxLayout(url_container)
+        url_layout.setContentsMargins(10, 10, 10, 10)
+        
         url_label = QLabel("URL:")
+        url_label.setStyleSheet("font-weight: bold;")
         self.url_input = QLineEdit()
         self.url_input.setPlaceholderText("输入网页地址...")
+        self.url_input.setMinimumHeight(35)
+        
         self.parse_button = QPushButton("解析")
+        self.parse_button.setMinimumHeight(35)
+        self.parse_button.setMinimumWidth(80)
         self.parse_button.clicked.connect(self.parse_url)
         
         url_layout.addWidget(url_label)
@@ -84,66 +102,128 @@ class ParserWidget(QWidget):
         url_layout.addWidget(self.parse_button)
         
         # 过滤区域
-        filter_layout = QHBoxLayout()
+        filter_container = QWidget()
+        filter_container.setObjectName("filterContainer")
+        filter_container.setStyleSheet("""
+            QWidget#filterContainer {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+                padding: 5px;
+            }
+        """)
+        filter_layout = QHBoxLayout(filter_container)
+        filter_layout.setContentsMargins(10, 10, 10, 10)
+        
         filter_label = QLabel("过滤:")
+        filter_label.setStyleSheet("font-weight: bold;")
         self.filter_input = QLineEdit()
         self.filter_input.setPlaceholderText("输入标签名、class、id或属性...")
+        self.filter_input.setMinimumHeight(35)
         self.filter_input.textChanged.connect(self.filter_tree)
         
         filter_layout.addWidget(filter_label)
         filter_layout.addWidget(self.filter_input)
         
         # 快捷标签按钮区域
-        tags_scroll = QWidget()
-        tags_layout = QHBoxLayout(tags_scroll)
-        tags_layout.setSpacing(5)
-        tags_layout.setContentsMargins(0, 0, 0, 0)
+        tags_container = QWidget()
+        tags_container.setObjectName("tagsContainer")
+        tags_container.setStyleSheet("""
+            QWidget#tagsContainer {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+                padding: 5px;
+            }
+        """)
+        tags_layout = QHBoxLayout(tags_container)
+        tags_layout.setSpacing(8)
+        tags_layout.setContentsMargins(10, 10, 10, 10)
         
         for tag, tooltip in self.common_tags:
             tag_btn = QPushButton(tag)
             tag_btn.setToolTip(tooltip)
-            tag_btn.setMaximumHeight(25)
-            tag_btn.setMinimumWidth(40)
+            tag_btn.setMinimumHeight(30)
+            tag_btn.setMinimumWidth(45)
             tag_btn.setStyleSheet("""
                 QPushButton {
-                    background-color: #e3f2fd;  /* 浅蓝色背景 */
-                    border: 1px solid #90caf9;  /* 蓝色边框 */
-                    border-radius: 3px;
+                    background-color: rgba(52, 152, 219, 0.1);
+                    border: 1px solid rgba(52, 152, 219, 0.2);
+                    border-radius: 4px;
                     padding: 2px 8px;
                     font-size: 11px;
-                    color: #1976d2;  /* 深蓝色文字 */
+                    color: #3498db;
                 }
                 QPushButton:hover {
-                    background-color: #bbdefb;  /* 鼠标悬停时的颜色 */
-                    border-color: #64b5f6;
+                    background-color: rgba(52, 152, 219, 0.2);
+                    border-color: rgba(52, 152, 219, 0.3);
                 }
                 QPushButton:pressed {
-                    background-color: #90caf9;  /* 按下时的颜色 */
+                    background-color: rgba(52, 152, 219, 0.3);
                 }
             """)
             tag_btn.clicked.connect(lambda checked, t=tag: self.apply_tag_filter(t))
             tags_layout.addWidget(tag_btn)
         
-        tags_layout.addStretch()  # 添加弹性空间
+        tags_layout.addStretch()
         
         # 树形视图
         self.tree = QTreeWidget()
         self.tree.setHeaderLabels(["标签", "属性"])
         self.tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.tree.customContextMenuRequested.connect(self.show_context_menu)
+        self.tree.setStyleSheet("""
+            QTreeWidget {
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                padding: 5px;
+            }
+            QTreeWidget::item {
+                padding: 5px;
+                margin: 2px 0;
+            }
+            QTreeWidget::item:selected {
+                background-color: rgba(52, 152, 219, 0.2);
+                border-radius: 4px;
+            }
+            QTreeWidget::item:hover {
+                background-color: rgba(52, 152, 219, 0.1);
+                border-radius: 4px;
+            }
+        """)
         
         # 预览区域
+        preview_container = QWidget()
+        preview_container.setObjectName("previewContainer")
+        preview_container.setStyleSheet("""
+            QWidget#previewContainer {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+                padding: 5px;
+            }
+        """)
+        preview_layout = QVBoxLayout(preview_container)
+        preview_layout.setContentsMargins(10, 10, 10, 10)
+        
         preview_label = QLabel("标签预览:")
+        preview_label.setStyleSheet("font-weight: bold;")
         self.preview = QTextEdit()
         self.preview.setReadOnly(True)
+        self.preview.setStyleSheet("""
+            QTextEdit {
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                padding: 5px;
+            }
+        """)
+        
+        preview_layout.addWidget(preview_label)
+        preview_layout.addWidget(self.preview)
         
         # 添加所有组件到主布局
-        main_layout.addLayout(url_layout)
-        main_layout.addLayout(filter_layout)
-        main_layout.addWidget(tags_scroll)
-        main_layout.addWidget(self.tree)
-        main_layout.addWidget(preview_label)
-        main_layout.addWidget(self.preview)
+        main_layout.addWidget(url_container)
+        main_layout.addWidget(filter_container)
+        main_layout.addWidget(tags_container)
+        main_layout.addWidget(self.tree, stretch=3)
+        main_layout.addWidget(preview_container, stretch=1)
 
     def parse_url(self):
         url = self.url_input.text().strip()
